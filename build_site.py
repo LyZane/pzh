@@ -345,6 +345,13 @@ h2 {{ font-family:var(--serif); font-size:clamp(24px,4.4vw,36px); letter-spacing
 .asset img {{ width:100%; border-radius:10px; }}
 .asset p {{ font-size:12.5px; color:var(--ink-dim); margin-top:10px; }}
 .asset b {{ color:var(--gold); }}
+.frames img, .asset img {{ cursor:zoom-in; transition:.25s; }}
+.frames img:hover, .asset img:hover {{ transform:scale(1.03); border-color:var(--gold); }}
+.lightbox {{ position:fixed; inset:0; z-index:100; display:none; place-items:center;
+  background:rgba(10,7,4,.92); backdrop-filter:blur(8px); cursor:zoom-out; }}
+.lightbox.on {{ display:grid; }}
+.lightbox img {{ max-width:92vw; max-height:92vh; border-radius:12px; box-shadow:0 20px 80px rgba(0,0,0,.65); }}
+.lightbox figcaption {{ position:absolute; bottom:22px; color:var(--ink-dim); font-size:13px; letter-spacing:2px; }}
 .place-grid {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; }}
 .place {{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px 20px; }}
 .place b {{ color:var(--gold); font-family:var(--serif); letter-spacing:2px; display:block; margin-bottom:4px; }}
@@ -463,7 +470,20 @@ footer .seal-mini {{ display:inline-block; background:var(--seal); color:#fff; b
 <span class="seal-mini">沛</span>片仔癀健康 · 沛呼吸 —— 30 秒 TVC 八版创意案 · 2026-08-06 · 内部提案
 </footer>
 
+<div class="lightbox" id="lightbox"><img alt=""><figcaption id="lb-cap"></figcaption></div>
+
 <script>
+// 灯箱放大
+const lb = document.getElementById('lightbox'), lbImg = lb.querySelector('img'), lbCap = document.getElementById('lb-cap');
+const lbClose = () => {{ lb.classList.remove('on'); document.body.style.overflow = ''; }};
+document.querySelectorAll('.frames img, .asset img').forEach(im => im.addEventListener('click', () => {{
+  lbImg.src = im.src; lbImg.alt = im.alt || '';
+  const cap = im.closest('figure')?.querySelector('figcaption')?.textContent || im.closest('.asset')?.querySelector('p')?.textContent || '';
+  lbCap.textContent = cap;
+  lb.classList.add('on'); document.body.style.overflow = 'hidden';
+}}));
+lb.addEventListener('click', lbClose);
+document.addEventListener('keydown', e => {{ if (e.key === 'Escape') lbClose(); }});
 // 复制按钮
 document.querySelectorAll('.copy-btn').forEach(btn => {{
   btn.addEventListener('click', () => {{
