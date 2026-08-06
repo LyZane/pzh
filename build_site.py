@@ -331,8 +331,9 @@ h2 {{ font-family:var(--serif); font-size:clamp(24px,4.4vw,36px); letter-spacing
 
 /* 试映室 */
 .cinema {{ display:grid; grid-template-columns:1.4fr 1fr; gap:18px; }}
-@media (max-width:820px) {{ .cinema {{ grid-template-columns:1fr; }} }}
-.cinema video {{ width:100%; border-radius:18px; border:1px solid var(--line); background:#000; }}
+@media (max-width:820px) {{ .cinema {{ grid-template-columns:1fr; }} .cinema video {{ width:100%; height:auto; }} }}
+.cinema video {{ display:block; height:min(76vh, 880px); aspect-ratio:9/16; width:auto; max-width:100%;
+  justify-self:center; border-radius:18px; border:1px solid var(--line); background:#000; }}
 .frames {{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }}
 .frames img {{ width:100%; border-radius:12px; border:1px solid var(--line); }}
 .frames figcaption {{ font-size:12px; color:var(--ink-dim); margin-top:4px; }}
